@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form action="http://localhost/blog/public/api/test" method="post">
+        <form action="http://localhost/php_server_demo/form.php" method="post">
             <editor v-bind:markdown="markdown"
                     v-bind:upload_uri="upload_uri"
             >
@@ -27,7 +27,7 @@
         '    echo \'hello world.\';\n' +
         '?>\n' +
         '```',   // 默认填充的markdown数据
-        upload_uri: 'http://localhost/api/upload/uploadimage'   // 图片上传服务器地址
+        upload_uri: 'http://localhost/php_server_demo/upload.php'   // 图片上传服务器地址
       }
     }
   }
