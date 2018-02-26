@@ -1,4 +1,4 @@
 <?php
 echo '<pre>';
-print_r($_POST);
+var_export($_POST);
 echo '</pre>';

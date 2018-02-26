@@ -1,22 +1,22 @@
 <template>
-  <div id="app">
-    <demo></demo>
-  </div>
+    <div id="app">
+        <demo></demo>
+    </div>
 </template>
 
 <script>
-  import demo from './components/Demo'
+    import demo from './components/Demo'
 
-  export default {
-    name: 'app',
-    components: {
-      demo
+    export default {
+        name: 'app',
+        components: {
+            demo
+        }
     }
-  }
 </script>
 
 <style>
-  #app {
-    height: 600px;
-  }
+    #app {
+        height: 600px;
+    }
 </style>
