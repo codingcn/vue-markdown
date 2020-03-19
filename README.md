@@ -9,7 +9,7 @@
 * 图片支持拖拽、截图粘贴两种上传方式,支持实时预览、（跨域）上传。
 * 支持全屏、分栏、预览等编辑模式。
 
-_注：关于一些个性化功能，比如 ***工具栏*** 和 ***TOC目录*** 。其实只要熟悉了`markdown`语法之后，是没有人会通过快捷工具栏来写`markdown`内容的，`TOC目录`的话我尝试写了一下，实现也很简单，就是在读取`markdown`编译后的`html`内容的时候，从中取下`h2 h3 h4...`几个节点而已。同学们如果需要的话，可以自己尝试着去做一下，不懂的地方欢迎交流。_
+_注：关于一些个性化功能，比如 ***工具栏*** 和 ***TOC目录*** 。其实只要熟悉了`markdown`语法之后，是没有人会通过快捷工具栏来写`markdown`内容的，`TOC目录`的话我尝试写了一下，实现也很简单，就是在读取`markdown`编译后的`html`内容的时候，从中选取下`h2 h3 h4...`几个节点而已。同学们如果需要的话，可以自己尝试着去做一下，不懂的地方欢迎交流。_
 
 ## 使用方法
 ***图片上传（后端）***
@@ -72,13 +72,10 @@ _注：关于一些个性化功能，比如 ***工具栏*** 和 ***TOC目录*** 
 cnpm install
 
 # serve with hot reload at localhost:8080
-npm run dev
+npm run serve
 
 # build for production with minification
 npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
 
 ```
 ## 该Markdown编辑器由以下优秀项目驱动

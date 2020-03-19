@@ -1,4 +1,5 @@
 <template>
+
     <section class="editor-container"
              :class="{
               'full': screen_mode === 'full',
@@ -30,7 +31,7 @@
       </textarea>
             <div id="editor_preview"
                  class="markdown-body"
-                 v-html="compiledMarkdown"
+                 v-html="compiledMarkdown()"
                  :class="{
               'edit': edit_mode === 'edit',
               'preview': edit_mode === 'preview'
@@ -44,16 +45,17 @@
 <script>
     require('../../node_modules/github-markdown-css/github-markdown.css')
     // 高亮样式
-    require('../../node_modules/highlight.js/styles/ocean.css')
+    // require('../../node_modules/highlight.js/styles/ocean.css')
+    import '../assets/oceanic-next-for-highlight-js.css';
     import highlightjs from 'highlight.js';
 
     import marked from 'marked'
     import Promise from 'promise-polyfill'
+    import axios from 'axios'
     // 为了让IE支持 axios
     if (!window.Promise) {
         window.Promise = Promise
     }
-    import axios from 'axios'
     //  import qs from 'qs'
 
     export default {
@@ -63,7 +65,7 @@
             this.setMarkdown()
         },
         watch: {
-            markdown: function (val, old_val) {
+            markdown: function (val) {
                 this.content_md = val
             }
         },
@@ -77,20 +79,28 @@
                 screen_mode: 'general'
             }
         },
-        computed: {
+        computed: {},
+        methods: {
             compiledMarkdown: function () {
                 // 编译markdown为html
-                this.content_html = marked(this.content_md, {sanitize: false})
 
+                let svg = `<div class="mac-window"><svg xmlns="http://www.w3.org/2000/svg" width="54" height="14" viewBox="0 0 54 14">
+<g fill="none" fill-rule="evenodd" transform="translate(1 1)">
+    <circle cx="6" cy="6" r="6" fill="#FF5F56" stroke="#E0443E" stroke-width=".5"></circle>
+    <circle cx="26" cy="6" r="6" fill="#FFBD2E" stroke="#DEA123" stroke-width=".5"></circle>
+    <circle cx="46" cy="6" r="6" fill="#27C93F" stroke="#1AAB29" stroke-width=".5"></circle></g></svg>
+    <span class="copy">复制代码</span>
+    </div>`
+                let h = marked(this.content_md, {sanitize: false})
+                h = h.toString().replace(/<pre>/g, "<pre>" + svg)
+                this.content_html = h
                 this.$emit('getEditorContent', {
                         'content_md': this.content_md,
                         'content_html': this.content_html
                     }
                 )
                 return this.content_html
-            }
-        },
-        methods: {
+            },
             changeEditMode: function () {
                 // 切换模式
                 this.edit_mode = this.edit_mode === 'preview' ? 'edit' : 'preview'
@@ -268,16 +278,45 @@
         }
     }
 </script>
+
 <style>
     /*重新定义code块背景色*/
     .markdown-body .highlight pre, .markdown-body pre {
-        background-color: #2b303b;
+        background-color: #2F4148;
+        border-radius: .42rem;
+        margin: 2rem 1rem;
+        outline: 1.3rem solid #F3F4F4;
     }
 
     /*重写github-markdown.css 适配highlight.js黑色主题*/
     .markdown-body pre code {
         color: #ffffff;
+        height: auto;
+        min-width: inherit;
     }
+    .mac-window{
+        margin-bottom: .6rem;
+        line-height: 1rem;
+        height: 1rem;
+        display: flex;
+        justify-content: space-between;
+    }
+    .mac-window svg{
+        float: left;
+    }
+    .mac-window .copy{
+        vertical-align: bottom;
+        color: gray;
+        float: right;
+
+    }
+    /*svg {*/
+    /*    margin-top: -24px;*/
+    /*    position: relative;*/
+    /*    top: 34px;*/
+    /*    margin-left: 14px;*/
+    /*    z-index: 2;*/
+    /*}*/
 </style>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
@@ -301,7 +340,7 @@
     .editor-container.general {
         margin: 0 auto;
         width: 100%;
-        height: 30rem;
+        height: 70%;
     }
 
     .editor-container.full {
