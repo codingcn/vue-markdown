@@ -83,17 +83,7 @@
         methods: {
             compiledMarkdown: function () {
                 // 编译markdown为html
-
-                let svg = `<div class="mac-window"><svg xmlns="http://www.w3.org/2000/svg" width="54" height="14" viewBox="0 0 54 14">
-<g fill="none" fill-rule="evenodd" transform="translate(1 1)">
-    <circle cx="6" cy="6" r="6" fill="#FF5F56" stroke="#E0443E" stroke-width=".5"></circle>
-    <circle cx="26" cy="6" r="6" fill="#FFBD2E" stroke="#DEA123" stroke-width=".5"></circle>
-    <circle cx="46" cy="6" r="6" fill="#27C93F" stroke="#1AAB29" stroke-width=".5"></circle></g></svg>
-    <span class="copy">复制代码</span>
-    </div>`
-                let h = marked(this.content_md, {sanitize: false})
-                h = h.toString().replace(/<pre>/g, "<pre>" + svg)
-                this.content_html = h
+                this.content_html = marked(this.content_md, {sanitize: false})
                 this.$emit('getEditorContent', {
                         'content_md': this.content_md,
                         'content_html': this.content_html
@@ -123,7 +113,15 @@
                     // Highlight only if the language is valid.
                     const highlighted = validLang ? highlightjs.highlight(language, code).value : highlightjs.highlightAuto(code).value;
                     // Render the highlighted code with `hljs` class.
-                    return `<pre><code class="${codeClass}">${highlighted}</code></pre>`;
+                    let languageStr = language ? language : 'other';
+                    let svg = `<div class="mac-window"><svg xmlns="http://www.w3.org/2000/svg" width="54" height="14" viewBox="0 0 54 14">
+<g fill="none" fill-rule="evenodd" transform="translate(1 1)">
+    <circle cx="6" cy="6" r="6" fill="#FF5F56" stroke="#E0443E" stroke-width=".5"></circle>
+    <circle cx="26" cy="6" r="6" fill="#FFBD2E" stroke="#DEA123" stroke-width=".5"></circle>
+    <circle cx="46" cy="6" r="6" fill="#27C93F" stroke="#1AAB29" stroke-width=".5"></circle></g></svg>
+    <span class="lang">${languageStr}</span>
+    </div>`
+                    return `<pre>${svg}<code class="${codeClass}">${highlighted}</code></pre>`;
                 };
                 marked.setOptions({
                     renderer: renderer,
@@ -294,22 +292,26 @@
         height: auto;
         min-width: inherit;
     }
-    .mac-window{
+
+    .mac-window {
         margin-bottom: .6rem;
         line-height: 1rem;
         height: 1rem;
         display: flex;
         justify-content: space-between;
     }
-    .mac-window svg{
+
+    .mac-window svg {
         float: left;
     }
-    .mac-window .copy{
+
+    .mac-window .lang {
         vertical-align: bottom;
         color: gray;
         float: right;
 
     }
+
     /*svg {*/
     /*    margin-top: -24px;*/
     /*    position: relative;*/
